@@ -5,14 +5,21 @@ const SearchBar = ({ onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e) => {
-    setInputValue.apply(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const value = e.target.elements.search.value;
+    const value = e.target.elements.search.value.trim();
+
+    if (!value) {
+      toast.error("Oppss!Enter your query");
+      return;
+    }
+
     onSubmit(value);
+    setInputValue("");
   };
 
   return (
