@@ -5,11 +5,11 @@ axios.defaults.params = {
   client_id: "ap6Ua4fpzUMLURTa6HJBsMzGZdxERQbbEI_i0dC8JsU",
 };
 
-async function serchFoto(page, query) {
+async function searchFoto(page, query) {
   const respons = await axios.get(
     `/search/photos/?page=${page}&query=${query}&orientation=landscape`
   );
 
   return respons.data;
 }
-export default serchFoto;
+export default searchFoto;

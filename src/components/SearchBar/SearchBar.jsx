@@ -1,4 +1,13 @@
+import { toast } from "react-hot-toast";
+import { useState } from "react";
+
 const SearchBar = ({ onSubmit }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e) => {
+    setInputValue.apply(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
