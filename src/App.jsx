@@ -5,7 +5,6 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import searchFoto from "./servise/servise";
 import { Toaster, toast } from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-// import ImageCaard from "./components/ImageCaard/ImageCaard";
 
 function App() {
   // Значення пошуку
@@ -22,7 +21,7 @@ function App() {
         const response = await searchFoto(10, value);
         setPhotos(response.data.hits);
         //добавила логику и сообщение что нету введенного поискового слова
-        if (response.data.hits.length === 0) {
+        if (!response.data.hits.length === 0) {
           toast("No results found. Try a different query.");
         }
       } catch (error) {
@@ -38,7 +37,7 @@ function App() {
   const onSubmit = (value) => {
     //проверка: Если пользователь нажмет на кнопку поиска, но ничего не введет в поле (или оставит пробелы), функция trim() удаляет пробелы в начале и конце строки.
     if (!value.trim()) {
-      toast("Please enter a search term.");
+      toast.error("Please enter a search term.");
       return;
     }
 
@@ -50,10 +49,8 @@ function App() {
   return (
     <>
       <SearchBar onSubmit={onSubmit} />
-      <ImageGallery />
       {error && <p>Error: {error}</p>}
       {/* Показуємо помилку, якщо вона є */}
-      {/* <Toaster position="top-right" /> */}
     </>
   );
 }

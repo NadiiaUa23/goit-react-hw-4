@@ -1,21 +1,18 @@
+import ImageCard from "../ImageCaard/ImageCard";
 import style from "./ImageGallery.module.css";
-import PropTypes from "prop-types";
 
-const ImageGallery = ({ src, alt }) => {
+const ImageGallery = ({ images, onImageClick }) => {
   return (
-    <ul>
-      {/* Набір елементів списку із зображеннями */}
-      <li>
-        <div className={styles.imageWrapper}>
-          <img src="" alt="" className={styles.image} />
-        </div>
+    <ul className={style.list}>
+      <li key={image.id} className={css.galleryItem}>
+        <ImageCard
+          image={image}
+          alt={image.alt_description || "Image"} // Додаємо alt
+          onClick={() => onImageClick(image)}
+        />
       </li>
     </ul>
   );
 };
-
-
-
-
 
 export default ImageGallery;
