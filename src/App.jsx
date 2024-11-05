@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
-import axios from "axios";
+// import axios from "axios";
 import searchFoto from "./servise/servise";
+import { Toaster, toast } from "react-hot-toast";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+// import ImageCaard from "./components/ImageCaard/ImageCaard";
 
 function App() {
-  const [value, setValue] = useState(""); // Значення пошуку
-  const [photos, setPhotos] = useState([]); // Додаємо стан для збереження фотографій
+  // Значення пошуку
+  const [value, setValue] = useState("");
+  // Додаємо стан для збереження фотографій
+  const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -16,25 +21,39 @@ function App() {
       try {
         const response = await searchFoto(10, value);
         setPhotos(response.data.hits);
+        //добавила логику и сообщение что нету введенного поискового слова
+        if (response.data.hits.length === 0) {
+          toast("No results found. Try a different query.");
+        }
       } catch (error) {
-        console.log(error.message);
+        setError(error.message);
+        toast.error("Opps! Please try again.");
       }
     }
 
-    // 2. Викликаємо її одразу після оголошення
+    // Викликаємо її одразу після оголошення
     fetchArticles();
   }, [value]);
 
   const onSubmit = (value) => {
+    //проверка: Если пользователь нажмет на кнопку поиска, но ничего не введет в поле (или оставит пробелы), функция trim() удаляет пробелы в начале и конце строки.
+    if (!value.trim()) {
+      toast("Please enter a search term.");
+      return;
+    }
+
     setValue(value);
-    // setPhotos([]);
+    setPhotos([]);
     setError(null);
   };
 
   return (
     <>
       <SearchBar onSubmit={onSubmit} />
-      {error && <p>Error: {error}</p>} {/* Показуємо помилку, якщо вона є */}
+      <ImageGallery />
+      {error && <p>Error: {error}</p>}
+      {/* Показуємо помилку, якщо вона є */}
+      {/* <Toaster position="top-right" /> */}
     </>
   );
 }

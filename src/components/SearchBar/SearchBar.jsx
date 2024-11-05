@@ -1,25 +1,21 @@
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 
-const SearchBar = ({ onSubmit }) => {
+function SearchBar({ onSubmit }) {
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const value = e.target.elements.search.value.trim();
-
-    if (!value) {
-      toast.error("Oppss!Enter your query");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!inputValue.trim()) {
+      toast("Please enter a search term.");
       return;
     }
-
-    onSubmit(value);
-    setInputValue("");
+    onSubmit(inputValue);
+    setInputValue(""); // Очистим инпут после сабмита
   };
 
   return (
@@ -32,12 +28,14 @@ const SearchBar = ({ onSubmit }) => {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
+            value={inputValue}
+            onChange={handleInputChange}
           />
           <button type="submit">Search</button>
         </form>
       </header>
     </>
   );
-};
+}
 
 export default SearchBar;
