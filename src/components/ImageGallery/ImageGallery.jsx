@@ -1,16 +1,15 @@
 import ImageCard from "../ImageCaard/ImageCard";
-import style from "./ImageGallery.module.css";
+// import css from "./ImageGallery.module.css";
 
-const ImageGallery = ({ images, onImageClick }) => {
+const ImageGallery = ({ photos }) => {
+  //приймає масив images як проп, і для кожного зображення створює елемент li з компонентом ImageCard.
   return (
-    <ul className={style.list}>
-      <li key={image.id} className={css.galleryItem}>
-        <ImageCard
-          image={image}
-          alt={image.alt_description || "Image"} // Додаємо alt
-          onClick={() => onImageClick(image)}
-        />
-      </li>
+    <ul>
+      {photos.map((photo) => (
+        <li key={photo.id}>
+          <ImageCard src={photo.urls.thumb} alt={photo.alt_description} />
+        </li>
+      ))}
     </ul>
   );
 };

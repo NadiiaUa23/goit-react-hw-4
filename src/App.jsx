@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
-// import axios from "axios";
 import searchFoto from "./servise/servise";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast"; //Toaster
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 
 function App() {
@@ -19,10 +18,13 @@ function App() {
     async function fetchArticles() {
       try {
         const response = await searchFoto(10, value);
-        setPhotos(response.data.hits);
-        //добавила логику и сообщение что нету введенного поискового слова
-        if (!response.data.hits.length === 0) {
-          toast("No results found. Try a different query.");
+        console.log(response); // Перевірте структуру відповіді
+
+        if (response.results) {
+          setPhotos(response.results);
+        }
+        if (response.results.length === 0) {
+          toast.error("No results found. Try a different query.");
         }
       } catch (error) {
         setError(error.message);
@@ -40,7 +42,6 @@ function App() {
       toast.error("Please enter a search term.");
       return;
     }
-
     setValue(value);
     setPhotos([]);
     setError(null);
@@ -51,6 +52,7 @@ function App() {
       <SearchBar onSubmit={onSubmit} />
       {error && <p>Error: {error}</p>}
       {/* Показуємо помилку, якщо вона є */}
+      {photos.length > 0 && <ImageGallery photos={photos} />}
     </>
   );
 }

@@ -1,0 +1,30 @@
+.heder {
+    display: flex;
+    background-color: rgb(36, 126, 236);
+    height: 49px;
+    justify-content: center;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    align-items: center;
+    height: 28px;
+
+}
+
+input {
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+input:focus {
+    border-bottom-color: rgba(0, 0, 0, 0.3);
+}

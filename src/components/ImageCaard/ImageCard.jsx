@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import styles from "./ImageCard.module.css"; // Подключаем стили для компонента
+// import css from "./ImageCard.module.css";
 
-function ImageCard({ image, alt, onClick }) {
+const ImageCard = ({ src, alt }) => {
+  //приймає src і alt як пропси для відображення окремого зображення.
   return (
-    <div onClick={onClick} className={styles.card}>
-      <img src={image.url} alt={alt} className={styles.image} />
+    <div>
+      <img src={src} alt={alt} />
     </div>
   );
-}
+};
 
 export default ImageCard;

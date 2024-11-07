@@ -9,7 +9,8 @@ async function searchFoto(page, query) {
   const respons = await axios.get(
     `/search/photos/?page=${page}&query=${query}&orientation=landscape`
   );
+  console.log(respons.data); // перевірка, що отримуємо від API
 
-  return respons.data;
+  return respons.data; // повертаємо повний об'єкт даних
 }
 export default searchFoto;
