@@ -4,6 +4,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import searchFoto from "./servise/servise";
 import { toast } from "react-hot-toast"; //Toaster
 import ImageGallery from "./components/ImageGallery/ImageGallery";
+import Loader from "./components/Loader/Loader";
 
 function App() {
   // Значення пошуку
@@ -11,13 +12,15 @@ function App() {
   // Додаємо стан для збереження фотографій
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!value) return;
 
     async function fetchArticles() {
+      setIsLoading(true);
       try {
-        const response = await searchFoto(10, value);
+        const response = await searchFoto(15, value);
         console.log(response); // Перевірте структуру відповіді
 
         if (response.results) {
@@ -29,6 +32,8 @@ function App() {
       } catch (error) {
         setError(error.message);
         toast.error("Opps! Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -53,6 +58,7 @@ function App() {
       {error && <p>Error: {error}</p>}
       {/* Показуємо помилку, якщо вона є */}
       {photos.length > 0 && <ImageGallery photos={photos} />}
+      {isLoading && <Loader />}
     </>
   );
 }
