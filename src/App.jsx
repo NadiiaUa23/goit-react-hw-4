@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import searchFoto from "./servise/servise";
-import { toast } from "react-hot-toast"; //Toaster
+import { Toaster, toast } from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
 
@@ -13,6 +13,7 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasImages, setHasImages] = useState([]);
 
   useEffect(() => {
     if (!value) return;
@@ -21,7 +22,7 @@ function App() {
       setIsLoading(true);
       try {
         const response = await searchFoto(15, value);
-        console.log(response); // Перевірте структуру відповіді
+        console.log(response); // Перевір
 
         if (response.results) {
           setPhotos(response.results);
@@ -54,6 +55,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="bottom-center" reverseOrder={false} />
       <SearchBar onSubmit={onSubmit} />
       {error && <p>Error: {error}</p>}
       {/* Показуємо помилку, якщо вона є */}
