@@ -1,15 +1,9 @@
-import React from "react";
-
-function LoadMoreBtn = ({ hasImages, onLoadMore }){
-  if (!hasImages) {
-    return null; // Кнопка не рендериться, якщо зображень немає
-  }
-
+function LoadMoreBtn() {
   return (
     <div>
-      <button onClick={onLoadMore}>Load more</button>
+      <button>Load more</button>
     </div>
   );
-};
+}
 
 export default LoadMoreBtn;

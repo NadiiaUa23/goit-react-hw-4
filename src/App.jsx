@@ -5,6 +5,7 @@ import searchFoto from "./servise/servise";
 import { Toaster, toast } from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 
 function App() {
   // Значення пошуку
@@ -13,7 +14,7 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasImages, setHasImages] = useState([]);
+  const [hasImages, setHasImages] = useState(1);
 
   useEffect(() => {
     if (!value) return;
@@ -23,11 +24,10 @@ function App() {
       try {
         const response = await searchFoto(15, value);
         console.log(response); // Перевір
-
-        if (response.results) {
-          setPhotos(response.results);
+        if (response.results && response.results.length > 0) {
+          setPhotos((prevPhotos) => [...prevPhotos, ...response.results]); // Додаємо нові зображення
         }
-        if (response.results.length === 0) {
+        if (response.results.length === 0 && hasImages === 1) {
           toast.error("No results found. Try a different query.");
         }
       } catch (error) {
@@ -40,7 +40,7 @@ function App() {
 
     // Викликаємо її одразу після оголошення
     fetchArticles();
-  }, [value]);
+  }, [value, hasImages]);
 
   const onSubmit = (value) => {
     //проверка: Если пользователь нажмет на кнопку поиска, но ничего не введет в поле (или оставит пробелы), функция trim() удаляет пробелы в начале и конце строки.
@@ -51,6 +51,7 @@ function App() {
     setValue(value);
     setPhotos([]);
     setError(null);
+    setHasImages(1); // Скидаємо сторінку на 1 при новому запиті
   };
 
   return (
@@ -61,6 +62,7 @@ function App() {
       {/* Показуємо помилку, якщо вона є */}
       {photos.length > 0 && <ImageGallery photos={photos} />}
       {isLoading && <Loader />}
+      {photos.length > 0 && !isLoading && <LoadMoreBtn />}
     </>
   );
 }
