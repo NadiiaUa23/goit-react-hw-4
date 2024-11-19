@@ -1,9 +1,16 @@
-function LoadMoreBtn() {
+import PropTypes from "prop-types";
+import css from "./LoadMoreBtn.module.css";
+
+const LoadMoreBtn = ({ onClick }) => {
   return (
-    <div>
-      <button>Load more</button>
-    </div>
+    <button className={css.btn} onClick={onClick}>
+      Load more
+    </button>
   );
-}
+};
+
+LoadMoreBtn.propTypes = {
+  onClick: PropTypes.func.isRequired, // onClick обов'язково повинен бути функцією
+};
 
 export default LoadMoreBtn;
