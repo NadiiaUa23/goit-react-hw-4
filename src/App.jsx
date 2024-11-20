@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import searchFoto from "./servise/servise";
@@ -6,7 +6,7 @@ import { Toaster, toast } from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-// import ImageModal from "./components/ImageModal/ImageModal";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const [value, setValue] = useState(""); // Значення пошуку
@@ -14,6 +14,7 @@ function App() {
   const [error, setError] = useState(null); // Помилки
   const [isLoading, setIsLoading] = useState(false); // Завантаження
   const [page, setPage] = useState(1); // Номер сторінки
+  const [selectedPhoto, setSelectedPhoto] = useState(null); // Для выбранного фото
 
   useEffect(() => {
     if (!value) return;
@@ -59,17 +60,31 @@ function App() {
     setPage((prevPage) => prevPage + 1);
   };
 
+  const handlePhotoClick = (photo) => {
+    setSelectedPhoto(photo);
+  };
+
+  const handleModalClose = () => {
+    setSelectedPhoto(null);
+  };
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
       <SearchBar onSubmit={onSubmit} />
       {error && <p>Error: {error}</p>}
-      {photos.length > 0 && <ImageGallery photos={photos} />}
+      {photos.length > 0 && (
+        <ImageGallery photos={photos} onPhotoClick={handlePhotoClick} />
+      )}
       {isLoading && <Loader />}
       {photos.length > 0 && !isLoading && (
         <LoadMoreBtn onClick={loadMorePhotos} />
       )}
-      {/* <ImageModal isOpen={isModalOpen} onClose={closeModal} /> */}
+      <ImageModal
+        isOpen={!!selectedPhoto}
+        onRequestClose={handleModalClose}
+        photo={selectedPhoto}
+      />
     </>
   );
 }
