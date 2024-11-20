@@ -7,6 +7,7 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 function App() {
   const [value, setValue] = useState(""); // Значення пошуку
@@ -15,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false); // Завантаження
   const [page, setPage] = useState(1); // Номер сторінки
   const [selectedPhoto, setSelectedPhoto] = useState(null); // Для выбранного фото
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!value) return;
@@ -62,17 +64,19 @@ function App() {
 
   const handlePhotoClick = (photo) => {
     setSelectedPhoto(photo);
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setSelectedPhoto(null);
+    setIsModalOpen(false);
   };
 
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
       <SearchBar onSubmit={onSubmit} />
-      {error && <p>Error: {error}</p>}
+      {error && <ErrorMessage message={error} />}
       {photos.length > 0 && (
         <ImageGallery photos={photos} onPhotoClick={handlePhotoClick} />
       )}
@@ -80,11 +84,13 @@ function App() {
       {photos.length > 0 && !isLoading && (
         <LoadMoreBtn onClick={loadMorePhotos} />
       )}
-      <ImageModal
-        isOpen={!!selectedPhoto}
-        onRequestClose={handleModalClose}
-        photo={selectedPhoto}
-      />
+      {isModalOpen && selectedPhoto && (
+        <ImageModal
+          isOpen={isModalOpen}
+          onRequestClose={handleModalClose}
+          photo={selectedPhoto}
+        />
+      )}
     </>
   );
 }
